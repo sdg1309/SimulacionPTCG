@@ -27,7 +27,7 @@ Este proyecto busca crear un entorno flexible para:
 
 Actualmente el enfoque está en:
 
-- N's Zoroark ex, con 2 verciones principales en mente:
+- N's Zoroark ex, con 2 versiones principales en mente:
     - Mega Lopunny ex
     - Cornerstone Mask Ogerpon ex
 
