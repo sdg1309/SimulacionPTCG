@@ -5,12 +5,12 @@ Simulador estadístico para analizar consistencia, recuperación y presión en m
 El objetivo principal del proyecto es comparar listas competitivas y medir objetivamente:
 
 - Setup inicial
-- Setup optimo
+- Setup óptimo
 - Brick rate
 - Recovery rate
 - Presión temprana
 - Impacto de techs
-- Performance contra arquetipos específicos (Futuro)
+- Performance contra arquetipos específicos (futuro)
 
 ---
 
@@ -22,16 +22,16 @@ Este proyecto busca crear un entorno flexible para:
 - Evaluar cambios de pocas cartas
 - Simular matchups
 - Medir consistencia
-- Experimentar con IA heurística (Futuro)
-- Escalar a simulaciones más avanzadas (Futuro)
+- Experimentar con IA heurística (futuro)
+- Escalar a simulaciones más avanzadas (futuro)
 
-Actualmente el enfoque está en:
+Actualmente, el enfoque está en:
 
 - N's Zoroark ex, con 2 versiones principales en mente:
     - Mega Lopunny ex
     - Cornerstone Mask Ogerpon ex
 
-- Matchups contra Team Rocket, Mega Venusaur y Mega Lucario (Futuro)
+- Matchups contra Team Rocket, Mega Venusaur y Mega Lucario (futuro)
 
 ---
 
@@ -93,7 +93,7 @@ sequenceDiagram
 
     Deck->>Sim: Construir mazo
     Sim->>Sim: Shuffle
-    Sim->>Sim: Draw inicial
+    Sim->>Sim: Robo inicial
     Sim->>Sim: Mulligan
 
     Sim->>Matchup: Aplicar presión/disrupción
@@ -120,13 +120,13 @@ Ejemplo:
 
 ---
 
-## Setup Rate Optimo:
+## Setup Rate Óptimo
 
-Probabilidad de abrir una mano optima y favorable.
+Probabilidad de abrir una mano óptima y favorable.
 
 Ejemplo:
-- Básico Optimo + buscador + energia
-- Básico + buscador + energia + soporte de robo
+- Básico óptimo + buscador + energía
+- Básico + buscador + energía + soporte de robo
 
 ---
 
@@ -151,7 +151,7 @@ Ejemplos:
 - Judge temprano
 - Unfair Stamp
 - ataque temprano
-- estadios (Futuro)
+- estadios (futuro)
 
 ---
 
@@ -206,12 +206,12 @@ print(run(ogerpon_deck))
 ```mermaid
 graph LR
 
-    A[Mano Inicial] --> B{Tiene Básico?}
+    A[Mano Inicial] --> B{¿Tiene Básico?}
 
     B -- No --> C[Mulligan]
     B -- Sí --> D[Evaluar Setup]
 
-    D --> E{Tiene Search o Draw?}
+    D --> E{¿Tiene Search o Draw?}
 
     E -- Sí --> F[Setup Exitoso]
     E -- No --> G[Brick]
@@ -221,7 +221,7 @@ graph LR
 
 # Categorías de Cartas
 
-Actualmente el simulador clasifica cartas en:
+Actualmente, el simulador clasifica cartas en:
 
 - Pokémon básicos
 - Evoluciones
@@ -241,7 +241,7 @@ Actualmente el simulador clasifica cartas en:
 
 - Bench real
 - Prize cards
-- Damage system
+- Sistema de daño
 - Evoluciones reales
 - Estados especiales
 
@@ -376,8 +376,8 @@ journey
 
     section Intermedio
       Matchups reales: 3: Usuario
-      Damage engine: 2: Usuario
-      Tempo simulation: 2: Usuario
+      Sistema de daño: 2: Usuario
+      Simulación de tempo: 2: Usuario
 
     section Avanzado
       IA heurística: 1: Usuario
