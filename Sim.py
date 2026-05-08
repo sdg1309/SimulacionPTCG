@@ -30,7 +30,9 @@ def evaluate_setup(hand):
         "Zekrom",
         "Reshiram",
         "Yveltal",
-        "Ogerpon"
+        "Ogerpon",
+        "Fezandipiti",
+        "Pecharunt"
     ])
 
     optimalBasics = sum(1 for c in hand if c in [
@@ -53,7 +55,8 @@ def evaluate_setup(hand):
 
     disruption = sum(1 for c in hand if c in [
         "Judge",
-        "Unfair"
+        "Unfair",
+        "Boss"
     ])
 
     energy = sum(1 for c in hand if c in [
@@ -111,7 +114,7 @@ def simulate_vs_rocket(deck_list):
 
     recovery = evaluate_setup(hand)[0]
 
-    return setup,optimalSetup, recovery, pressure
+    return setup, optimalSetup, recovery, pressure
 
 
 def run(deck, n=5000):
