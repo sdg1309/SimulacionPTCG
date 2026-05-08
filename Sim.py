@@ -57,8 +57,8 @@ def evaluate_setup(hand):
     ])
 
     energy = sum(1 for c in hand if c in [
-        "Judge",
-        "Unfair"
+        "DarknessEnergy",
+        "PrismEnergy"
     ])
 
     setup = (
