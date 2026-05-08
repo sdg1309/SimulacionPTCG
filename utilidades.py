@@ -35,3 +35,16 @@ def has_basic(hand):
     ]
 
     return any(card in basics for card in hand)
+
+def mulligan(deck):
+
+    while True:
+
+        shuffle(deck)
+
+        hand = draw(deck, 7)
+
+        if has_basic(hand):
+            return hand, deck
+
+        deck += hand

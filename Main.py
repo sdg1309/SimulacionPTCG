@@ -6,14 +6,8 @@ from listas import (
     ogerpon_deck
 )
 
-from sim import run
+from run import run, print_analysis
 
-
-print("=== Lopunny lillie ===")
-print(run(lopunny_deck_lillie))
-
-print("\n=== Lopunny poffin ===")
-print(run(lopunny_deck_poffin))
-
-print("\n=== Ogerpon ===")
-print(run(ogerpon_deck))
+print_analysis("Lopunny Lillie", run(lopunny_deck_lillie))
+print_analysis("Lopunny Poffin", run(lopunny_deck_poffin))
+print_analysis("Ogerpon", run(ogerpon_deck))

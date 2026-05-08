@@ -10,6 +10,7 @@ El objetivo principal del proyecto es comparar listas competitivas y medir objet
 - Recovery rate
 - Presión temprana
 - Impacto de techs
+- Análisis por turno inicial (primero/segundo)
 - Performance contra arquetipos específicos (futuro)
 
 ---
@@ -22,6 +23,7 @@ Este proyecto busca crear un entorno flexible para:
 - Evaluar cambios de pocas cartas
 - Simular matchups
 - Medir consistencia
+- Analizar impacto del turno inicial
 - Experimentar con IA heurística (futuro)
 - Escalar a simulaciones más avanzadas (futuro)
 
@@ -155,51 +157,18 @@ Ejemplos:
 
 ---
 
-# Ejemplo de Resultado
+## Métricas por Turno Inicial
 
-```python
-{
-    "setup_rate": 0.81,
-    "recovery_rate": 0.63,
-    "pressure_rate": 0.42
-}
-```
+El simulador ahora calcula métricas separadas para escenarios donde el jugador va primero o segundo, permitiendo análisis más detallado de la consistencia.
 
----
+### Setup Rate si va primero
+Probabilidad de setup asumiendo que el jugador va primero.
 
-# Cómo Ejecutar
+### Setup Rate si va segundo
+Probabilidad de setup asumiendo que el jugador va segundo.
 
-## Requisitos
-
-- Python 3.11+
-- VSCode recomendado
-
----
-
-## Ejecutar simulación
-
-```bash
-python main.py
-```
-
----
-
-# Ejemplo de Uso
-
-```python
-from listas import (
-    lopunny_deck_lillie,
-    ogerpon_deck
-)
-
-from sim import run
-
-
-print(run(lopunny_deck_lillie))
-print(run(ogerpon_deck))
-```
-
----
+### Análisis Comparativo
+Diferencias entre métricas de "va primero" vs "va segundo" para identificar ventajas/desventajas por turno inicial.
 
 # Lógica Actual de Evaluación
 
@@ -280,15 +249,19 @@ Posible integración con:
 # Ideas de Matchups
 
 ## Team Rocket
+
 - Disrupción
 - Debilidad Planta
 - Setup rápido
 
 ## Mega Venusaur
+
 - Alto HP
+- Debilidad Planta
 - Matchup de daño
 
 ## Mega Lucario
+
 - Presión agresiva
 - Tempo rápido
 

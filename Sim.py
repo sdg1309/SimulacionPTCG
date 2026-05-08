@@ -2,24 +2,10 @@
 
 import random
 
-from utilidades import shuffle, draw, has_basic
+from utilidades import shuffle, draw, mulligan
 
 
-def mulligan(deck):
-
-    while True:
-
-        shuffle(deck)
-
-        hand = draw(deck, 7)
-
-        if has_basic(hand):
-            return hand, deck
-
-        deck += hand
-
-
-def evaluate_setup(hand):
+def evaluate_setup(hand, going_first):
 
     basics = sum(1 for c in hand if c in [
         "Zorua",
@@ -42,14 +28,18 @@ def evaluate_setup(hand):
         "Ogerpon"
     ])
 
-    search = sum(1 for c in hand if c in [
+    searchItem = sum(1 for c in hand if c in [
         "UltraBall",
         "Poffin",
-        "Pad",
-        "Cyrano"
+        "Pad"
     ])
 
-    draw_support = sum(1 for c in hand if c in [
+    searchSupport = sum(1 for c in hand if c in [
+        "Cyrano",
+        "Ciphermaniac"
+    ])
+
+    drawSupport = sum(1 for c in hand if c in [
         "Lillie"
     ])
 
@@ -64,78 +54,108 @@ def evaluate_setup(hand):
         "PrismEnergy"
     ])
 
-    setup = (
-        basics >= 1
-        and
-        optimalBasics >= 0
-        and
-        energy >= 0
-        and
-        (search >= 1 or draw_support >= 1)
-    )
+    if going_first == True:
 
-    optimalSetup = (
-        optimalBasics >= 1
-        and
-        energy >= 1
-        and
-        (search >= 2 or draw_support >= 1)
+        setup = (   
+            basics >= 1
+            and
+            energy >= 1
+            and
+            searchItem >= 1
+        )
 
-    )
+        optimalSetup = (
+            optimalBasics >= 1
+            and
+            energy >= 1
+            and
+            searchItem >= 2 
+            and
+            drawSupport >= 1
 
-    pressure = setup and disruption >= 1
+        )
 
-    return setup, pressure, optimalSetup
+        pressure = setup and disruption >= 1
+
+        return setup, pressure, optimalSetup
+    
+
+    else:
+
+        setup = (
+            basics >= 1
+            and
+            energy >= 1
+            and
+            (searchItem >= 1 or drawSupport >= 1)
+        )
+
+        optimalSetup = (
+            optimalBasics >= 1
+            and
+            energy >= 1
+            and
+            searchItem >= 2 
+            and
+            (drawSupport >= 1 or searchSupport >=1)
+
+        )
+
+        pressure = setup and disruption >= 1
+
+        return setup, pressure, optimalSetup
 
 
-def rocket_disruption(hand):
+def apply_disruption(hand, min_cards=3, max_cards=4):
 
-    new_size = random.choice([3, 4])
+    new_size = random.randint(min_cards, max_cards)
 
     return random.sample(
         hand,
         min(len(hand), new_size)
     )
 
-
-def simulate_vs_rocket(deck_list):
+def simulate_game(deck_list, disruption=False, disruption_range=(3, 4)):
 
     deck = deck_list.copy()
 
+    going_first = random.choice([True, False])
+
     hand, deck = mulligan(deck)
 
-    setup, pressure, optimalSetup = evaluate_setup(hand)
+    setup_if_first, pressure_if_first, optimalSetup_if_first = evaluate_setup(hand, True)
+    setup_if_second, pressure_if_second, optimalSetup_if_second = evaluate_setup(hand, False)
+
+    setup, pressure, optimalSetup = evaluate_setup(hand, going_first)
 
     hand += draw(deck, 1)
 
-    hand = rocket_disruption(hand)
+    if disruption:
+
+        hand = apply_disruption(
+            hand,
+            disruption_range[0],
+            disruption_range[1]
+        )
 
     hand += draw(deck, 1)
 
-    recovery = evaluate_setup(hand)[0]
-
-    return setup, optimalSetup, recovery, pressure
-
-
-def run(deck, n=5000):
-
-    setup_count = 0
-    optimalSetup_count = 0
-    recovery_count = 0
-    pressure_count = 0
-
-    for _ in range(n):
-
-        s, o, r, p = simulate_vs_rocket(deck)
-
-        setup_count += s
-        optimalSetup_count += o
-        recovery_count += (s and r)
-        pressure_count += p
+    recovery_if_first = evaluate_setup(hand, True)[0]
+    recovery_if_second = evaluate_setup(hand, False)[0]
+    recovery = evaluate_setup(hand, going_first)[0]  # Actual recovery based on going_first
 
     return {
-        "setup_rate": setup_count / n,
-        "optimalsetup_rate": optimalSetup_count / n,
-        "recovery_rate": recovery_count / n,
-        "pressure_rate": pressure_count / n
+        "setup": setup,
+        "optimal_setup": optimalSetup,
+        "recovery": recovery,
+        "pressure": pressure,
+        "going_first": going_first,
+        "setup_if_first": setup_if_first,
+        "pressure_if_first": pressure_if_first,
+        "optimal_setup_if_first": optimalSetup_if_first,
+        "recovery_if_first": recovery_if_first,
+        "setup_if_second": setup_if_second,
+        "pressure_if_second": pressure_if_second,
+        "optimal_setup_if_second": optimalSetup_if_second,
+        "recovery_if_second": recovery_if_second,
     }
